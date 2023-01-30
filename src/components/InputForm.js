@@ -6,7 +6,7 @@ import * as Yup from "yup";
 const InputForm = () => {
     const { state, handleFunction } = useContext(GlobalContext);
     const { input } = state;
-    const { handleChange, handleSubmit } = handleFunction;
+    const { handleSubmit } = handleFunction;
 
     const validationSchema = Yup.object().shape({
         name: Yup.string().required("Name is required"),

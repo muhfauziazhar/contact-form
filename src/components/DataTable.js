@@ -3,7 +3,7 @@ import { GlobalContext } from "../GlobalContext";
 
 const DataTable = () => {
     const { state, handleFunction } = useContext(GlobalContext);
-    const { contacts, theme, setTheme } = state;
+    const { contacts } = state;
     const { handleEdit, handleDelete } = handleFunction;
     useEffect(() => {
         localStorage.setItem("contacts", JSON.stringify(contacts));

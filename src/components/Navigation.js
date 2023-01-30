@@ -31,7 +31,7 @@ const Navigation = () => {
     };
     return (
         <div>
-            <Navbar fluid={true} rounded={true}>
+            <Navbar fluid={true} rounded={false}>
                 <Navbar.Brand href="/">
                     <img
                         src="https://flowbite.com/docs/images/logo.svg"
