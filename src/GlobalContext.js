@@ -21,10 +21,8 @@ export const GlobalProvider = (props) => {
         setInput({ ...input, [event.target.name]: event.target.value });
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-
-        let { name, email, subject, category, message } = input;
+    const handleSubmit = (values) => {
+        let { name, email, subject, category, message } = values;
 
         if (currentId === -1) {
             setContacts([...contacts, { id: uuidv4(), name, email, subject, category, message }]);

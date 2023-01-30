@@ -1,81 +1,121 @@
 import React, { useContext } from "react";
 import { GlobalContext } from "../GlobalContext";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const InputForm = () => {
     const { state, handleFunction } = useContext(GlobalContext);
     const { input } = state;
     const { handleChange, handleSubmit } = handleFunction;
 
+    const validationSchema = Yup.object().shape({
+        name: Yup.string().required("Name is required"),
+        email: Yup.string().email("Invalid email").required("Email is required"),
+        subject: Yup.string().required("Subject is required"),
+        category: Yup.string().required("Category is required"),
+        message: Yup.string().required("Message is required"),
+    });
+
+    const formik = useFormik({
+        initialValues: input,
+        validationSchema,
+        onSubmit: (values) => {
+            handleSubmit(values);
+        },
+    });
+
     return (
         <>
-            <form onSubmit={handleSubmit} className="w-4/5 mx-auto mb-5">
+            <form onSubmit={formik.handleSubmit} className="w-4/5 mx-auto mb-5">
                 <div className="mb-6">
                     <input
-                        value={input.name}
-                        onChange={handleChange}
+                        value={formik.values.name}
+                        onChange={formik.handleChange}
                         name="name"
                         type="text"
-                        className="bg-gray-50 border border-gray-300 text-gray-900
-                    text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700
-                    dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className={
+                            formik.errors.name && formik.touched.name
+                                ? "bg-gray-50 border border-red-500 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
+                                : "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        }
                         placeholder="Masukkan nama..."
-                        required
                     />
+                    {formik.errors.name && formik.touched.name ? (
+                        <p className="text-red-500">{formik.errors.name}</p>
+                    ) : null}
                 </div>
                 <div className="mb-6">
                     <input
-                        value={input.email}
-                        onChange={handleChange}
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
                         name="email"
                         type="email"
-                        className="bg-gray-50 border border-gray-300 text-gray-900
-                    text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700
-                    dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className={
+                            formik.errors.email && formik.touched.email
+                                ? "bg-gray-50 border border-red-500 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
+                                : "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        }
                         placeholder="Masukkan email..."
-                        required
                     />
+                    {formik.errors.email && formik.touched.email ? (
+                        <p className="text-red-500">{formik.errors.email}</p>
+                    ) : null}
                 </div>
                 <div className="mb-6">
                     <input
-                        value={input.subject}
-                        onChange={handleChange}
+                        value={formik.values.subject}
+                        onChange={formik.handleChange}
                         name="subject"
                         type="text"
-                        className="bg-gray-50 border border-gray-300 text-gray-900
-                    text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700
-                    dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className={
+                            formik.errors.subject && formik.touched.subject
+                                ? "bg-gray-50 border border-red-500 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
+                                : "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        }
                         placeholder="Masukkan subject..."
-                        required
                     />
+                    {formik.errors.subject && formik.touched.subject ? (
+                        <p className="text-red-500">{formik.errors.subject}</p>
+                    ) : null}
                 </div>
                 <div className="mb-6">
                     <select
                         id="category"
-                        value={input.category}
-                        onChange={handleChange}
+                        value={formik.values.category}
+                        onChange={formik.handleChange}
                         name="category"
-                        required
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className={
+                            formik.errors.category && formik.touched.category
+                                ? "bg-gray-50 border border-red-500 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
+                                : "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        }
                     >
                         <option value="none">Pilih category...</option>
                         <option value="su">Support</option>
                         <option value="cs">Customer Service</option>
                         <option value="hr">Human Resource</option>
                     </select>
+                    {formik.errors.category && formik.touched.category ? (
+                        <p className="text-red-500">{formik.errors.category}</p>
+                    ) : null}
                 </div>
                 <div className="mb-6">
                     <textarea
-                        value={input.message}
+                        value={formik.values.message}
                         rows="4"
-                        onChange={handleChange}
+                        onChange={formik.handleChange}
                         name="message"
                         type="text"
-                        className="bg-gray-50 border border-gray-300 text-gray-900
-                    text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700
-                    dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className={
+                            formik.errors.message && formik.touched.message
+                                ? "bg-gray-50 border border-red-500 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
+                                : "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        }
                         placeholder="Masukkan message..."
-                        required
                     />
+                    {formik.errors.message && formik.touched.message ? (
+                        <p className="text-red-500">{formik.errors.message}</p>
+                    ) : null}
                 </div>
                 <button
                     type="submit"
