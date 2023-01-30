@@ -1,8 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar } from "flowbite-react";
 import { Link } from "react-router-dom";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+library.add(fas);
 
 const Navigation = () => {
+    const [isDark, setIsDark] = useState(
+        localStorage.getItem("color-theme") === "dark" ||
+            (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+    );
+
+    useEffect(() => {
+        if (
+            localStorage.getItem("color-theme") === "dark" ||
+            (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ) {
+            document.documentElement.classList.add("dark");
+        } else {
+            document.documentElement.classList.remove("dark");
+        }
+    }, [isDark]);
+
+    const handleClick = () => {
+        setIsDark(!isDark);
+        localStorage.setItem("color-theme", isDark ? "light" : "dark");
+        document.documentElement.classList.toggle("dark");
+    };
     return (
         <div>
             <Navbar fluid={true} rounded={true}>
@@ -16,6 +42,15 @@ const Navigation = () => {
                         Erasys Contact
                     </span>
                 </Navbar.Brand>
+                <button
+                    id="theme-toggle"
+                    type="button"
+                    onClick={handleClick}
+                    className="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5"
+                >
+                    <FontAwesomeIcon icon={["fas", "sun"]} className={isDark ? "" : "hidden"} />
+                    <FontAwesomeIcon icon={["fas", "moon"]} className={isDark ? "hidden" : ""} />
+                </button>
                 <Navbar.Toggle />
                 <Navbar.Collapse>
                     <ul className="flex flex-col p-4 mt-4 bg-gray-50 rounded-lg border border-gray-100 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
